@@ -8,23 +8,23 @@ export default class Class extends Model {
   name!: string;
 
   // fields in models need either optionality
-  users?: User[]
+  users?: User[];
   // todo: classCourses?: ClassCourses[]
 
   static tableName = 'classes';
 
-    // this object defines the relations to other models.
-    static relationMappings = () => ({
-      users: {
-        relation: Model.HasManyRelation,
-        modelClass: User,
-        join: {
-          from: 'classes.id',
-          to: 'users.userId'
-        }
-      }
-        // todo: define here relation with ClassCourses
-    });
+  // this object defines the relations to other models.
+  static relationMappings = () => ({
+    users: {
+      relation: Model.HasManyRelation,
+      modelClass: User,
+      join: {
+        from: 'classes.id',
+        to: 'users.userId',
+      },
+    },
+    // todo: define here relation with ClassCourses
+  });
 
-    static columnNameMappers = snakeCaseMappers();
+  static columnNameMappers = snakeCaseMappers();
 }

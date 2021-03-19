@@ -8,11 +8,11 @@ export default class Attendance extends Model {
   code!: string;
   coordLat!: number;
   coordLng!: number;
-  closesAt!: string;  // ?????
+  closesAt!: string; // ?????
   userId!: number;
 
   // fields in models need either optionality
-  users?: User[]
+  users?: User[];
   // todo: schedules?: ScheduleEvent[]
 
   static tableName = 'attendances';
@@ -24,12 +24,11 @@ export default class Attendance extends Model {
       modelClass: User,
       join: {
         from: 'attendances.userId',
-        to: 'users.id'
-      }
-    }
+        to: 'users.id',
+      },
+    },
     // todo: define here relation with ScheduleEvents table
   });
 
   static columnNameMappers = snakeCaseMappers();
-
 }
