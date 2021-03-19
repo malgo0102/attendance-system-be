@@ -11,10 +11,10 @@ export default class User extends Model {
   email!: string;
   role!: string;
   password!: string;
-  classId!: number
+  classId!: number;
 
   // fields in models need either optionality
-  classes?: Class[]
+  classes?: Class[];
   // todo: courses?: Course[]
 
   static tableName = 'users';
@@ -26,17 +26,17 @@ export default class User extends Model {
       modelClass: Class,
       join: {
         from: 'users.classId',
-        to: 'classes.id'
-      }
+        to: 'classes.id',
+      },
     },
     attendances: {
       relation: Model.HasManyRelation,
       modelClass: Attendance,
       join: {
         from: 'users.id',
-        to: 'attendances.userId'
-      }
-    }
+        to: 'attendances.userId',
+      },
+    },
     // todo: define here relation with Course table
   });
 

@@ -1,7 +1,7 @@
 import express from 'express';
 import { PORT } from './util/secrets';
 import Knex from 'knex';
-import knexfile from './knexfile'
+import knexfile from './knexfile';
 import { Model } from 'objection';
 
 // Initialize knex.
