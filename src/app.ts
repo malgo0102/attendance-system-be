@@ -1,5 +1,14 @@
 import express from 'express';
 import { PORT } from './util/secrets';
+import Knex from 'knex';
+import knexfile from './knexfile'
+import { Model } from 'objection';
+
+// Initialize knex.
+const knex = Knex(knexfile.development);
+
+// Bind all Models to a knex instance.
+Model.knex(knex);
 
 // Controllers (route handlers)
 import * as testController from './controllers/test';
