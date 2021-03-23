@@ -1,7 +1,7 @@
 import { Model, snakeCaseMappers } from 'objection';
 import Class from './Class';
 import Attendance from './Attendance';
-//import Course from 'Course';
+import Course from './Course';
 
 export default class User extends Model {
   // for not-null fields that are always initialized, we can use the ! syntax:
@@ -15,7 +15,8 @@ export default class User extends Model {
 
   // fields in models need either optionality
   classes?: Class[];
-  // todo: courses?: Course[]
+  courses?: Course[];
+  attendances?: Attendance[];
 
   static tableName = 'users';
 
@@ -37,7 +38,14 @@ export default class User extends Model {
         to: 'attendances.userId',
       },
     },
-    // todo: define here relation with Course table
+    courses: {
+      relation: Model.HasManyRelation,
+      modelClass: Attendance,
+      join: {
+        from: 'users.id',
+        to: 'courses.teacherId',
+      },
+    }
   });
 
   static columnNameMappers = snakeCaseMappers();
