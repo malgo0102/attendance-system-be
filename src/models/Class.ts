@@ -9,7 +9,7 @@ export default class Class extends Model {
 
   // fields in models need either optionality
   users?: User[];
-  classCourses?: ClassCourse[]
+  classCourses?: ClassCourse[];
 
   static tableName = 'classes';
 
@@ -23,14 +23,14 @@ export default class Class extends Model {
         to: 'users.userId',
       },
     },
-    class_courses: {
+    classCourses: {
       relation: Model.HasManyRelation,
       modelClass: ClassCourse,
       join: {
         from: 'classes.id',
         to: 'class_courses.classId',
       },
-    }
+    },
   });
 
   static columnNameMappers = snakeCaseMappers();

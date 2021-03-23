@@ -45,7 +45,7 @@ export default class User extends Model {
         from: 'users.id',
         to: 'courses.teacherId',
       },
-    }
+    },
   });
 
   static columnNameMappers = snakeCaseMappers();
