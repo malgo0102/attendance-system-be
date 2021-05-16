@@ -5,7 +5,8 @@ import ClassCourse from './ClassCourse';
 export default class ScheduleEvent extends Model {
   // for not-null fields that are always initialized, we can use the ! syntax:
   id!: number;
-  isActive!: boolean;
+  startAt!: string;
+  endAt!: string;
 
   // fields in models need either optionality
   attendances?: Attendance[];
