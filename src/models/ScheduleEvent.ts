@@ -1,34 +1,35 @@
 import { Model, snakeCaseMappers } from 'objection';
-import User from './User';
+import Attendance from './Attendance';
 import ClassCourse from './ClassCourse';
 
-export default class Class extends Model {
+export default class ScheduleEvent extends Model {
   // for not-null fields that are always initialized, we can use the ! syntax:
   id!: number;
-  name!: string;
+  startAt!: string;
+  endAt!: string;
 
   // fields in models need either optionality
-  users?: User[];
-  classCourses?: ClassCourse[];
+  attendances?: Attendance[];
+  class_courses?: ClassCourse[];
 
-  static tableName = 'classes';
+  static tableName = 'schedule_events';
 
   // this object defines the relations to other models.
   static relationMappings = () => ({
-    users: {
+    attendances: {
       relation: Model.HasManyRelation,
-      modelClass: User,
+      modelClass: Attendance,
       join: {
-        from: 'classes.id',
-        to: 'users.userId',
+        from: 'schedule_events.id',
+        to: 'attendances.attendanceId',
       },
     },
     classCourses: {
-      relation: Model.HasManyRelation,
+      relation: Model.BelongsToOneRelation,
       modelClass: ClassCourse,
       join: {
-        from: 'classes.id',
-        to: 'class_courses.classId',
+        from: 'schedule_events.classCourseId',
+        to: 'class_courses.id',
       },
     },
   });

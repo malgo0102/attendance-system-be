@@ -1,6 +1,6 @@
 import { Model, snakeCaseMappers } from 'objection';
 import User from './User';
-//import ScheduleEvent from './ScheduleEvent'
+import ScheduleEvent from './ScheduleEvent';
 
 export default class Attendance extends Model {
   // for not-null fields that are always initialized, we can use the ! syntax:
@@ -13,13 +13,13 @@ export default class Attendance extends Model {
 
   // fields in models need either optionality
   users?: User[];
-  // todo: schedules?: ScheduleEvent[]
+  schedules?: ScheduleEvent[];
 
   static tableName = 'attendances';
 
   // this object defines the relations to other models.
   static relationMappings = () => ({
-    user: {
+    users: {
       relation: Model.BelongsToOneRelation,
       modelClass: User,
       join: {
@@ -27,7 +27,14 @@ export default class Attendance extends Model {
         to: 'users.id',
       },
     },
-    // todo: define here relation with ScheduleEvents table
+    scheduleEvents: {
+      relation: Model.BelongsToOneRelation,
+      modelClass: ScheduleEvent,
+      join: {
+        from: 'attendances.scheduleEventId',
+        to: 'shedule_events.id',
+      },
+    },
   });
 
   static columnNameMappers = snakeCaseMappers();

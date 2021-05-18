@@ -1,13 +1,14 @@
-require('dotenv').config();
+require('dotenv').config({path: '../.env' });
+const { knexSnakeCaseMappers } = require("objection");
 
 module.exports = {
 
   development: {
     client: 'pg',
     connection: {
-      database: 'attendance_system',
-      user:     'postgres',
-      password: 'postgres'
+      database: process.env.DB_NAME,
+      user:     process.env.DB_USER,
+      password: process.env.DB_PASSWORD
     },
     pool: {
       min: 2,
@@ -18,7 +19,8 @@ module.exports = {
     },
     seeds: {
       directory: '../db/seeds'
-    }
+    },
+    ...knexSnakeCaseMappers()
   },
 
   test: {
@@ -37,7 +39,8 @@ module.exports = {
     },
     seeds: {
       directory: './db/seeds'
-    }
+    },
+    ...knexSnakeCaseMappers()
   }
 
 };
