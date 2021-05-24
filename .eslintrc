@@ -12,7 +12,14 @@
     "prettier"
   ],
   "rules": {
-    "no-console": 0,
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "error"
+        ]
+      }
+    ],
     "prettier/prettier": 2,
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-function-return-type": "off"
