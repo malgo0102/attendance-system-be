@@ -1,13 +1,14 @@
 import express from 'express';
-import { PORT } from './util/secrets';
+import { PORT, clientOrigins } from './util/secrets';
 import Knex from 'knex';
 import knexfile from './knexfile';
 import { Model } from 'objection';
 import cors from 'cors';
 import helmet from 'helmet';
-import { clientOrigins } from './util/secrets';
 import usersRouter from './routes/users.route';
+import classesRouter from './routes/classes.route';
 import handleGenericError from './errors/handle-generic-error';
+import logger from 'morgan';
 
 // Initialize knex.
 const knex = Knex(knexfile.development);
@@ -19,16 +20,18 @@ Model.knex(knex);
 const app = express();
 
 // Express configuration
-app.set('port', PORT || 3000);
+app.set('port', PORT);
 app.use(helmet());
-app.use(cors({ origin: clientOrigins }));
+app.use(cors({ origin: clientOrigins, exposedHeaders: ['Content-Range'] }));
 app.use(express.json());
+app.use(logger('dev'));
 
 /**
  * Primary app routes.
  */
 
-app.use('/users', usersRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/classes', classesRouter);
 
 app.use(handleGenericError);
 

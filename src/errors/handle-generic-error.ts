@@ -9,5 +9,8 @@ export default function(
   next: NextFunction,
 ) {
   console.error(err);
+  if (!err.statusCode || err.statusCode >= 500) {
+    err = APIError.ServerError;
+  }
   return res.status(err.statusCode || 500).send(err);
 }
