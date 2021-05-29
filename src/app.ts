@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import usersRouter from './routes/users.route';
 import classesRouter from './routes/classes.route';
 import coursesRouter from './routes/courses.route';
+import scheduleEventRouter from './routes/schedule-event.route';
 import handleGenericError from './errors/handle-generic-error';
 import logger from 'morgan';
 
@@ -34,6 +35,7 @@ app.use(logger('dev'));
 app.use('/api/users', usersRouter);
 app.use('/api/classes', classesRouter);
 app.use('/api/courses', coursesRouter);
+app.use('/api/schedule-events', scheduleEventRouter);
 
 app.use(handleGenericError);
 
