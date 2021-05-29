@@ -12,7 +12,10 @@ export function createUser(req: Request, res: Response, next: NextFunction) {
     role: Joi.string()
       .valid('Admin', 'Teacher', 'Student')
       .required(),
-    classId: Joi.number().required(),
+    classId: Joi.when('role', {
+      is: 'Student',
+      then: Joi.number().required(),
+    }),
   });
   validateRequest(req, next, schema);
 }

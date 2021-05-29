@@ -1,4 +1,5 @@
 import { userRoleIds } from './secrets';
+import { Role } from '../types/interfaces/User';
 
 export function roleToRoleId(role: Role) {
   switch (role) {

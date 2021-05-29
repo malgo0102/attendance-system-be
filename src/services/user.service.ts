@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { auth0ManagementClient } from './auth0-managament.service';
 import { generate } from 'generate-password';
 import { QueryListParams } from '../types/interfaces/QueryListParams';
@@ -7,12 +6,17 @@ import { userdataToUser } from '../util/userdata-to-user';
 import { roleToRoleId } from '../util/role-to-role-id';
 import ClassModel from '../models/Class';
 import APIError from '../errors/api-error';
+import { User } from '../types/interfaces/User';
 
 export async function createUser(user: User) {
-  const class_ = await ClassModel.query().findById(user.classId);
-  if (!class_) {
-    throw APIError.ResourceNotFound('Class', user.classId);
+  let class_;
+  if (user.role === 'Student') {
+    class_ = await ClassModel.query().findById(user.classId);
+    if (!class_) {
+      throw APIError.ResourceNotFound('Class', user.classId);
+    }
   }
+
   const newUser = await auth0ManagementClient.createUser({
     email: user.email,
     email_verified: false,
@@ -26,7 +30,7 @@ export async function createUser(user: User) {
       firstName: user.firstName,
       lastName: user.lastName,
       role: user.role,
-      classId: class_.id,
+      classId: class_ ? class_.id : null,
     },
     user_metadata: {},
   });
@@ -37,6 +41,7 @@ export async function createUser(user: User) {
   );
 
   // This ticket contains a link to reset password, that the user should receive account creation
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { ticket } = await auth0ManagementClient.createPasswordChangeTicket({
     user_id: newUser.user_id,
     ttl_sec: 60 * 60 * 24 * 7,
@@ -83,8 +88,16 @@ export async function getAllUsers(listParameters?: QueryListParams) {
     total: number;
     users: UserData[];
   };
+  let responseData;
+  if (listParameters && listParameters.filter && listParameters.filter.role) {
+    responseData = response.users
+      .map(u => userdataToUser(u))
+      .filter(u => u.role === listParameters.filter?.role);
+  } else {
+    responseData = response.users.map(u => userdataToUser(u));
+  }
   return {
-    data: response.users.map(u => userdataToUser(u)),
+    data: responseData,
     pagination: {
       total: response.total,
       start: response.start,
@@ -99,10 +112,14 @@ export async function getUserById(userId: string) {
 }
 
 export async function updateUser(userId: string, updatedUser: User) {
-  const class_ = await ClassModel.query().findById(updatedUser.classId);
-  if (!class_) {
-    throw APIError.ResourceNotFound('Class', updatedUser.classId);
+  let class_;
+  if (updatedUser.role === 'Student') {
+    class_ = await ClassModel.query().findById(updatedUser.classId);
+    if (!class_) {
+      throw APIError.ResourceNotFound('Class', updatedUser.classId);
+    }
   }
+
   const userData = await auth0ManagementClient.updateUser(
     { id: userId },
     {
@@ -111,7 +128,7 @@ export async function updateUser(userId: string, updatedUser: User) {
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
         role: updatedUser.role,
-        classId: class_.id,
+        classId: class_ ? class_.id : null,
       },
     },
   );
