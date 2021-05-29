@@ -1,8 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config({ path: '../.env' });
 
 module.exports = {
   development: {
-    client: 'mysql',
+    client: 'pg',
     connection: {
       database: process.env.DB_NAME,
       user: process.env.DB_USER,
@@ -22,7 +23,7 @@ module.exports = {
   },
 
   test: {
-    client: 'mysql',
+    client: 'pg',
     connection: {
       database: process.env.DB_NAME,
       user: process.env.DB_USER,

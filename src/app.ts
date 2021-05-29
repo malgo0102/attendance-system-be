@@ -11,7 +11,6 @@ import coursesRouter from './routes/courses.route';
 import handleGenericError from './errors/handle-generic-error';
 import logger from 'morgan';
 
-
 // Initialize knex.
 const knex = Knex(knexfile.development);
 

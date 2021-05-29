@@ -1,4 +1,4 @@
-interface User {
+export interface User {
   id: string;
   firstName: string;
   lastName: string;
@@ -7,4 +7,4 @@ interface User {
   classId: number;
 }
 
-type Role = 'Admin' | 'Teacher' | 'Student';
+export type Role = 'Admin' | 'Teacher' | 'Student';

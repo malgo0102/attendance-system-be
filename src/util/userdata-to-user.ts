@@ -1,4 +1,5 @@
 import { UserData } from 'auth0';
+import { User } from '../types/interfaces/User';
 
 export function userdataToUser(userData: UserData): User {
   return {

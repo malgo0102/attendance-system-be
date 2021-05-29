@@ -10,7 +10,13 @@ export const createCourse = async (req: Request, res: Response) => {
 
 export const getAllCourses = async (req: Request, res: Response) => {
   const listParameters = req.queryListParams;
-  const { data } = await coursesService.getAll(listParameters);
+  const { data, pagination } = await coursesService.getAll(listParameters);
+  if (pagination) {
+    res.header(
+      'Content-Range',
+      `users ${pagination.start}-${pagination.end}/${pagination.total}`,
+    );
+  }
   res.send(data);
 };
 

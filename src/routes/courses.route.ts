@@ -33,9 +33,9 @@ coursesRouter.get(
 coursesRouter.put(
   '/:id',
   checkJwt(),
-  checkPermissions(['read:course']),
+  checkPermissions(['update:course']),
   coursesValidation.updateCourse,
-  wrap(coursesController.getCourseById),
+  wrap(coursesController.updateCourse),
 );
 
 coursesRouter.delete(

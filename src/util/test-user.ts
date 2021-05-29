@@ -1,3 +1,5 @@
+import { User } from '../types/interfaces/User';
+
 export const testUser: User = {
   id: '1',
   firstName: 'Admin',

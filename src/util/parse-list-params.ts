@@ -12,6 +12,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
   if (req.query.filter) {
     listParams.filter = JSON.parse(req.query.filter as string);
   }
+
   req.queryListParams = listParams;
   next();
 };
