@@ -22,6 +22,17 @@ exports.up = function(knex) {
         .references('id')
         .inTable('classes')
         .onDelete('CASCADE');
+    })
+    .createTable('schedule_event', table => {
+      table.increments('id').primary();
+      table.dateTime('start').notNullable();
+      table.dateTime('end').notNullable();
+      table
+        .integer('course_id')
+        .notNullable()
+        .references('id')
+        .inTable('courses')
+        .onDelete('CASCADE');
     });
 };
 
@@ -29,5 +40,6 @@ exports.down = function(knex) {
   return knex.schema
     .dropTableIfExists('attendances')
     .dropTableIfExists('courses')
-    .dropTableIfExists('classes');
+    .dropTableIfExists('classes')
+    .dropTableIfExists('schedule_event');
 };
