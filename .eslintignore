@@ -4,3 +4,7 @@ node_modules
 build
 # don't lint nyc coverage output
 coverage
+
+/src/types/interfaces/QueryListParams.ts
+
+/src/server.ts

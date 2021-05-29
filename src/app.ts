@@ -7,8 +7,10 @@ import cors from 'cors';
 import helmet from 'helmet';
 import usersRouter from './routes/users.route';
 import classesRouter from './routes/classes.route';
+import coursesRouter from './routes/courses.route';
 import handleGenericError from './errors/handle-generic-error';
 import logger from 'morgan';
+
 
 // Initialize knex.
 const knex = Knex(knexfile.development);
@@ -32,6 +34,7 @@ app.use(logger('dev'));
 
 app.use('/api/users', usersRouter);
 app.use('/api/classes', classesRouter);
+app.use('/api/courses', coursesRouter);
 
 app.use(handleGenericError);
 
