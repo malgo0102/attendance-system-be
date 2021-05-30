@@ -4,6 +4,8 @@ import ScheduleEvent, { ScheduleEventShape } from '../models/ScheduleEvent';
 import { QueryListParams } from '../types/interfaces/QueryListParams';
 import { applyListParams } from '../util/apply-list-params';
 import { ListResponse } from '../types/interfaces/ListResponse';
+import APIError from '../errors/api-error';
+import * as coursesService from './courses.service';
 
 export async function create(
   scheduleEvent: ScheduleEventShape & { repeatWeekly: boolean; until: Date },
@@ -77,4 +79,22 @@ export async function getAll(
         : 0,
     },
   };
+}
+export async function getById(id: string) {
+  return ScheduleEvent.query().findById(id);
+}
+
+export async function update(
+  id: string,
+  updatedScheduleEvent: ScheduleEventShape,
+) {
+  const course = await coursesService.getById(updatedScheduleEvent.courseId);
+  if (!course) {
+    throw APIError.ValidationError('Invalid course');
+  }
+  return ScheduleEvent.query().patchAndFetchById(id, updatedScheduleEvent);
+}
+
+export async function delete_(id: string) {
+  return ScheduleEvent.query().deleteById(id);
 }

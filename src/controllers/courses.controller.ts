@@ -21,7 +21,7 @@ export const getAllCourses = async (req: Request, res: Response) => {
 };
 
 export const getCourseById = async (req: Request, res: Response) => {
-  const data = await coursesService.getById(req.params.id);
+  const data = await coursesService.getById(Number(req.params.id));
   res.send(data);
 };
 
