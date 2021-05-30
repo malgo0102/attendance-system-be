@@ -23,3 +23,12 @@ export async function getAttendanceEvent(id: string) {
     .withGraphFetched('scheduleEvent.[course]')
     .findById(id);
 }
+
+export async function closeAttendanceEvent(
+  id: string,
+  attendanceObject: AttendanceShape,
+) {
+  return Attendance.query().patchAndFetchById(id, {
+    isClosed: attendanceObject.isClosed,
+  });
+}
