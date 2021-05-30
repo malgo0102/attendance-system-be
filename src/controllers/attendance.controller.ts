@@ -17,3 +17,12 @@ export const getOne = async (req: Request, res: Response) => {
   }
   res.send(attendance);
 };
+export const updateAttendance = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const attendanceStatus = req.body;
+  const attendance = await attendanceService.closeAttendanceEvent(
+    id,
+    attendanceStatus,
+  );
+  res.send(attendance);
+};

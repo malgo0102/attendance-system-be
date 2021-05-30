@@ -20,3 +20,14 @@ export function createAttendance(
   });
   validateRequest(req, next, schema);
 }
+
+export function updateAttendance(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const schema = Joi.object({
+    isClosed: Joi.boolean().required(),
+  });
+  validateRequest(req, next, schema);
+}
