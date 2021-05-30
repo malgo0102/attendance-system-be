@@ -22,5 +22,5 @@ export default class CourseModel extends Model {
     },
   };
 }
-
+//https://dev.to/htunnicliff/comment/17ngc
 export type CourseShape = ModelObject<CourseModel>;

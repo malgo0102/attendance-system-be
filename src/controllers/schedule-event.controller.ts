@@ -21,3 +21,24 @@ export const getAll = async (req: Request, res: Response) => {
   }
   res.send(data);
 };
+
+export const getOne = async (req: Request, res: Response) => {
+  const data = await scheduleEventService.getById(req.params.id);
+  res.send(data);
+};
+
+export const updateScheduleEvent = async (req: Request, res: Response) => {
+  const updatedScheduleEvent = req.body;
+  const data = await scheduleEventService.update(
+    req.params.id,
+    updatedScheduleEvent,
+  );
+  res.send(data);
+};
+
+export const deleteById = async (req: Request, res: Response) => {
+  await scheduleEventService.delete_(req.params.id);
+  return res.json({
+    data: { id: req.params.id },
+  });
+};

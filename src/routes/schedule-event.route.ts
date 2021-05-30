@@ -7,6 +7,21 @@ import configureListParams from '../util/parse-list-params';
 
 const scheduleEventRouter = Router();
 
+scheduleEventRouter.get(
+  '/',
+  checkJwt(),
+  checkPermissions(['read:schedule-event']),
+  configureListParams,
+  wrap(scheduleEventController.getAll),
+);
+
+scheduleEventRouter.get(
+  '/:id',
+  checkJwt(),
+  checkPermissions(['read:schedule-event']),
+  wrap(scheduleEventController.getOne),
+);
+
 scheduleEventRouter.post(
   '/',
   checkJwt(),
@@ -15,12 +30,19 @@ scheduleEventRouter.post(
   wrap(scheduleEventController.createScheduleEvent),
 );
 
-scheduleEventRouter.get(
-  '/',
+scheduleEventRouter.put(
+  '/:id',
   checkJwt(),
-  checkPermissions(['read:schedule-event']),
-  configureListParams,
-  wrap(scheduleEventController.getAll),
+  checkPermissions(['update:schedule-event']),
+  scheduleEventValidation.updateEvent,
+  wrap(scheduleEventController.updateScheduleEvent),
+);
+
+scheduleEventRouter.delete(
+  '/:id',
+  checkJwt(),
+  checkPermissions(['delete:schedule-event']),
+  wrap(scheduleEventController.deleteById),
 );
 
 export default scheduleEventRouter;

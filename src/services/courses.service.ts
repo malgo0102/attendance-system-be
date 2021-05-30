@@ -34,7 +34,7 @@ export async function getAll(
   };
 }
 
-export async function getById(id: string) {
+export async function getById(id: number) {
   return CourseModel.query().findById(id);
 }
 
