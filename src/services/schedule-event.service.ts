@@ -80,7 +80,7 @@ export async function getAll(
     },
   };
 }
-export async function getById(id: string) {
+export async function getById(id: string | number) {
   return ScheduleEvent.query().findById(id);
 }
 

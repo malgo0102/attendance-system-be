@@ -4,14 +4,6 @@ exports.up = function(knex) {
       table.increments('id').primary();
       table.string('name').notNullable();
     })
-    .createTable('attendances', table => {
-      table.increments('id').primary();
-      table.string('code').notNullable();
-      table.decimal('coord_lat').notNullable();
-      table.decimal('coord_lng').notNullable();
-      table.time('closesAt').notNullable();
-      table.integer('user_id');
-    })
     .createTable('courses', table => {
       table.increments('id').primary();
       table.string('name').notNullable();
@@ -33,13 +25,42 @@ exports.up = function(knex) {
         .references('id')
         .inTable('courses')
         .onDelete('CASCADE');
+    })
+    .createTable('attendances', table => {
+      table.increments('id').primary();
+      table
+        .string('code')
+        .unique()
+        .notNullable();
+      table
+        .integer('schedule_event_id')
+        .unique()
+        .notNullable()
+        .references('id')
+        .inTable('schedule_event')
+        .onDelete('CASCADE');
+      table.dateTime('end_time').notNullable();
+      table.boolean('restrict_ip').notNullable();
+      table.string('ip');
+      table.boolean('is_closed').notNullable();
+    })
+    .createTable('attendance_logs', table => {
+      table.increments('id').primary();
+      table
+        .integer('attendance_id')
+        .notNullable()
+        .references('id')
+        .inTable('attendances')
+        .onDelete('CASCADE');
+      table.string('user_id').notNullable();
     });
 };
 
 exports.down = function(knex) {
   return knex.schema
+    .dropTableIfExists('attendance_logs')
     .dropTableIfExists('attendances')
+    .dropTableIfExists('schedule_event')
     .dropTableIfExists('courses')
-    .dropTableIfExists('classes')
-    .dropTableIfExists('schedule_event');
+    .dropTableIfExists('classes');
 };
