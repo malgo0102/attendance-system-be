@@ -9,9 +9,6 @@ export const me = async (req: Request, res: Response) => {
   if (TEST_MODE) {
     res.send(testUser);
   }
-  const ip = req.headers['x-forwarded-for'];
-  console.log('Ip:', ip);
-  console.log('IP:', req.connection.remoteAddress);
   const user = await userService.getUserById(req.user?.sub ?? '');
   res.send(user);
 };
