@@ -15,8 +15,8 @@ attendanceRouter.post(
 
 attendanceRouter.get(
   '/:id',
-  // checkJwt(),
-  // checkPermissions(['read:attendance']),
+  checkJwt(),
+  checkPermissions(['read:attendance']),
   wrap(attendanceController.getOne),
 );
 

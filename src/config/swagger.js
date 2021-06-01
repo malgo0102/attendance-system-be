@@ -8,7 +8,6 @@ const swaggerDocument = YAML.load(fs.readFileSync('./swagger.yaml'), 'utf-8');
 
 //const swaggerDocument = fs.readFileSync('./swagger.json');
 //require('../../')
-console.log(swaggerDocument);
 
 router.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
