@@ -4,6 +4,8 @@ import APIError from '../errors/api-error';
 import Attendance, { AttendanceShape } from '../models/Attendance';
 import { generateAttendanceCode } from '../util/generate-attendance-code';
 import { userdataToUser } from '../util/userdata-to-user';
+import * as userService from '../services/user.service';
+import AttendanceLog from '../models/AttendanceLog';
 
 const CODE_LENGTH = 6;
 
@@ -39,11 +41,10 @@ export async function getAttendanceProgress(id: string) {
       q: `app_metadata.classId:${classId} AND app_metadata.role:"Student"`,
     })
   ).map(student => userdataToUser(student));
-  const studentsList = allStudentsInRelatedClass.map(student => ({
+  return allStudentsInRelatedClass.map(student => ({
     ...student,
     isPresent: studentsThatMarkedAttendanceIdList.includes(student.id),
   }));
-  return studentsList;
 }
 
 export async function closeAttendanceEvent(
@@ -52,5 +53,54 @@ export async function closeAttendanceEvent(
 ) {
   return Attendance.query().patchAndFetchById(id, {
     isClosed: attendanceObject.isClosed,
+  });
+}
+
+export async function markAttendance(
+  studentId: string,
+  studentIp: string,
+  attendanceId: string,
+  attendanceCode: string,
+) {
+  const attendanceEvent = await Attendance.query()
+    .withGraphFetched('[scheduleEvent.[course], logs]')
+    .where('code', attendanceCode)
+    .first();
+  if (!attendanceEvent) {
+    throw APIError.ResourceNotFound('Attendance', attendanceCode);
+  }
+  if (attendanceEvent.code !== attendanceCode) {
+    throw APIError.BadRequest('Invalid code');
+  }
+  if (
+    attendanceEvent.endTime.getTime() < new Date().getTime() ||
+    attendanceEvent.isClosed
+  ) {
+    throw APIError.BadRequest('Attendance expired');
+  }
+  if (attendanceEvent.restrictIp && attendanceEvent.ip !== studentIp) {
+    throw APIError.BadRequest('Attendance limited by ip');
+  }
+  const student = await userService.getUserById(studentId);
+  if (student.role !== 'Student') {
+    throw APIError.BadRequest('Only students can mark attendance');
+  }
+  if (student.classId !== attendanceEvent.scheduleEvent.course.classId) {
+    throw APIError.BadRequest('You are not part of this class');
+  }
+  if (
+    attendanceEvent.logs.find(
+      log =>
+        log.userId === student.id && log.attendanceId === attendanceEvent.id,
+    )
+  ) {
+    throw APIError.BadRequest(
+      'You have already submitted your presence for this class',
+    );
+  }
+
+  return AttendanceLog.query().insert({
+    attendanceId: Number(attendanceEvent.id),
+    userId: studentId,
   });
 }
