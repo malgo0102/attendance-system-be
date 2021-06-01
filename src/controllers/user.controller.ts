@@ -9,6 +9,7 @@ export const me = async (req: Request, res: Response) => {
   if (TEST_MODE) {
     res.send(testUser);
   }
+  console.log('IP:', req.connection.remoteAddress);
   const user = await userService.getUserById(req.user?.sub ?? '');
   res.send(user);
 };
