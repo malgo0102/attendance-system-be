@@ -39,6 +39,11 @@ app.use('/api/courses', coursesRouter);
 app.use('/api/schedule-events', scheduleEventRouter);
 app.use('/api/attendance', attendanceRouter);
 
+/**
+ * Swagger docs route
+ */
+app.use('/api-docs', require('./config/swagger'));
+
 app.use(handleGenericError);
 
 export default app;
