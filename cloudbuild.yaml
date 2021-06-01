@@ -1,0 +1,13 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: [ 'cp', 'gs://${_BUCKET_NAME}/.env', '.env' ]
+  - name: node
+    entrypoint: npm
+    args: ['install']
+  - name: node
+    entrypoint: npm
+    args: ['run', 'build-cloud']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['app', 'deploy']
+
+timeout: '1600s'
