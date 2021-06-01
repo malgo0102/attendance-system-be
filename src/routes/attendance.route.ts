@@ -33,4 +33,11 @@ attendanceRouter.put(
   wrap(attendanceController.updateAttendance),
 );
 
+attendanceRouter.post(
+  '/submit',
+  checkJwt(),
+  attendanceValidation.markAttendance,
+  wrap(attendanceController.markAttendance),
+);
+
 export default attendanceRouter;

@@ -53,7 +53,7 @@ export async function getAll(
   const { count: totalCount } = (await ScheduleEvent.query()
     .count()
     .first()) as any;
-  let query = ScheduleEvent.query();
+  let query = ScheduleEvent.query().withGraphFetched('course');
   if (listParams) {
     if (listParams.filter && listParams.filter.length === 2) {
       if (listParams.filter[0] === 'teacher_id') {
@@ -61,8 +61,10 @@ export async function getAll(
           .joinRelated('course')
           .where('course.teacher_id', listParams.filter[1]);
       }
-      if (listParams.filter[0] === 'classId') {
-        query = query.joinRelated('course');
+      if (listParams.filter[0] === 'class_id') {
+        query = query
+          .joinRelated('course')
+          .where('course.class_id', listParams.filter[1]);
       }
       listParams.filter = undefined;
     }

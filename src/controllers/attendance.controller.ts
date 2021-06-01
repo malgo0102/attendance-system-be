@@ -33,3 +33,23 @@ export const updateAttendance = async (req: Request, res: Response) => {
   );
   res.send(attendance);
 };
+
+export const markAttendance = async (req: Request, res: Response) => {
+  const studentId = req.user?.sub ?? '';
+  const attendanceId = req.params.id;
+  const attendanceCode = req.body.code;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const studentIp = req.headers['x-forwarded-for'].split(',')[0].trim();
+  const log = await attendanceService.markAttendance(
+    studentId,
+    studentIp,
+    attendanceId,
+    attendanceCode,
+  );
+  if (log) {
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(500);
+  }
+};

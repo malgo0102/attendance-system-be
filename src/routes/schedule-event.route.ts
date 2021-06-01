@@ -9,8 +9,8 @@ const scheduleEventRouter = Router();
 
 scheduleEventRouter.get(
   '/',
-  checkJwt(),
-  checkPermissions(['read:schedule-event']),
+  // checkJwt(),
+  // checkPermissions(['read:schedule-event']),
   configureListParams,
   wrap(scheduleEventController.getAll),
 );

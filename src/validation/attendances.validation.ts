@@ -31,3 +31,14 @@ export function updateAttendance(
   });
   validateRequest(req, next, schema);
 }
+
+export function markAttendance(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const schema = Joi.object({
+    code: Joi.string().required(),
+  });
+  validateRequest(req, next, schema);
+}
