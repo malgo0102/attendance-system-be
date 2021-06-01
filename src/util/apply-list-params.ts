@@ -6,7 +6,7 @@ export function applyListParams<M extends Model, R = M[]>(
   listParams: QueryListParams,
 ): QueryBuilder<M, R> {
   const { range, sort, filter } = listParams;
-  if (filter) {
+  if (filter && filter.length) {
     query = query.where(filter[0], filter[1]);
   }
   if (range) {

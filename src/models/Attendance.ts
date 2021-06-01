@@ -1,5 +1,6 @@
 import { Model, ModelObject, snakeCaseMappers } from 'objection';
 import ScheduleEvent from './ScheduleEvent';
+import AttendanceLog from './AttendanceLog';
 
 export default class Attendance extends Model {
   // for not-null fields that are always initialized, we can use the ! syntax:
@@ -10,6 +11,8 @@ export default class Attendance extends Model {
   restrictIp!: boolean;
   isClosed!: boolean;
   ip?: string;
+  scheduleEvent!: ScheduleEvent;
+  logs!: AttendanceLog[];
 
   static tableName = 'attendances';
 
@@ -21,6 +24,14 @@ export default class Attendance extends Model {
       join: {
         from: 'attendances.schedule_event_id',
         to: 'schedule_event.id',
+      },
+    },
+    logs: {
+      relation: Model.HasManyRelation,
+      modelClass: AttendanceLog,
+      join: {
+        from: 'attendances.id',
+        to: 'attendance_logs.attendance_id',
       },
     },
   });

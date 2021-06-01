@@ -7,6 +7,7 @@ export default class ScheduleEvent extends Model {
   start!: Date;
   end!: Date;
   courseId!: number;
+  course!: CourseModel;
 
   static tableName = 'schedule_event';
   static columnNameMappers = snakeCaseMappers();

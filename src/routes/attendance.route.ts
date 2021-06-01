@@ -15,9 +15,14 @@ attendanceRouter.post(
 
 attendanceRouter.get(
   '/:id',
-  checkJwt(),
-  checkPermissions(['read:attendance']),
+  // checkJwt(),
+  // checkPermissions(['read:attendance']),
   wrap(attendanceController.getOne),
+);
+
+attendanceRouter.get(
+  '/:id/progress',
+  wrap(attendanceController.getAttendanceProgress),
 );
 
 attendanceRouter.put(

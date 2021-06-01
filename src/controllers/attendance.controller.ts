@@ -17,6 +17,13 @@ export const getOne = async (req: Request, res: Response) => {
   }
   res.send(attendance);
 };
+
+export const getAttendanceProgress = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const studentsList = await attendanceService.getAttendanceProgress(id);
+  res.send(studentsList);
+};
+
 export const updateAttendance = async (req: Request, res: Response) => {
   const id = req.params.id;
   const attendanceStatus = req.body;
