@@ -10,6 +10,7 @@ export const createClass = async (req: Request, res: Response) => {
 
 export const getAllClasses = async (req: Request, res: Response) => {
   const listParameters = req.queryListParams;
+  console.log(listParameters);
   const { data, pagination } = await classesService.getAll(listParameters);
   if (pagination) {
     res.header(
